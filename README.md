@@ -7,16 +7,15 @@
     git clone <THE LINK YOU JUST COPIED>
     ```
 4. Go to the directory (The place you ran the prompt from) and open VSCODE there
-5. Delete the folder called ```vendor```
-6. In the terminal run:
-    ```bash
-    npm install && npm run build
-    ```
-7. Then run:
+5. In the terminal run:
     ```bash
     composer install
     ```
-8. Search for a file called ```.env.example``` and delete the ```.example``` part
+6. Then run:
+    ```bash
+    npm install && npm run build
+    ```
+7. Search for a file called ```.env.example``` and delete the ```.example``` part
 
 # How to run
 1. In the terminal run:
