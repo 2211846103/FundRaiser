@@ -34,3 +34,7 @@
     composer run dev
     ```
 2. enjoy :D
+
+# Creds: 
+- email: admin.example.com
+- pass: admin
