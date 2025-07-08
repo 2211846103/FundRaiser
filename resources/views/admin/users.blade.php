@@ -92,7 +92,7 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <img src="{{ Avatar::create($user->username)->toBase64() }}" alt="Profile" class="w-8 h-8 rounded-full">
+                                        <img src="https://ui-avatars.com/api/?name={{ $user->username }}&background=random" alt="Profile" class="w-8 h-8 rounded-full">
                                         <div class="ml-4">
                                             <div class="text-sm font-medium text-gray-900">{{ $user->username }}</div>
                                             <div class="text-sm text-gray-500">{{ $user->email }}</div>

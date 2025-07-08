@@ -1,3 +1,11 @@
+# Pre-Requisites
+- Laragon (If on Windows will install the rest)
+- Laravel
+- Composer
+- PHP
+- NodeJS
+- Python
+
 # How to Install
 
 1. Click the Big Green Button Called ```Code```
@@ -15,7 +23,10 @@
     ```bash
     npm install && npm run build
     ```
-7. Search for a file called ```.env.example``` and delete the ```.example``` part
+7. Run:
+    ```bash
+    php artisan migrate:seed
+    ```
 
 # How to run
 1. In the terminal run:

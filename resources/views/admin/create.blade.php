@@ -135,7 +135,7 @@
                     <div class="space-y-3">
                         @foreach ($admins as $admin)
                             <div class="flex items-center space-x-3">
-                                <img src="{{ Avatar::create($admin->username)->toBase64() }}" alt="Profile" class="w-8 h-8 rounded-full">
+                                <img src="https://ui-avatars.com/api/?name={{ $admin->username }}&background=random" alt="Profile" class="w-8 h-8 rounded-full">
                                 <div>
                                     <p class="text-sm font-medium">{{ $admin->username }}</p>
                                 </div>

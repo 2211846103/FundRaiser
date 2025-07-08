@@ -21,7 +21,7 @@ use Laravolt\Avatar\Facade as Avatar;
                 @auth
                     <div class="relative">
                         <button onclick="toggleUserMenu()" class="flex items-center space-x-2 text-gray-700 hover:text-primary transition-colors">
-                            <img src="{{ Avatar::create(auth()->user()->username)->toBase64() }}" alt="Profile" class="w-8 h-8 rounded-full">
+                            <img src="https://ui-avatars.com/api/?name={{ auth()->user()->username }}&background=random" alt="Profile" class="w-8 h-8 rounded-full">
                             <span>{{ auth()->user()->username }}</span>
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
