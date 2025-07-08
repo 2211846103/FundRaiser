@@ -9,7 +9,7 @@
 4. Go to the directory (The place you ran the prompt from) and open VSCODE there
 5. In the terminal run:
     ```bash
-    composer install
+    npm install && npm run build
     ```
 6. Search for a file called ```.env.example``` and delete the ```.example``` part
 
