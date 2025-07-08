@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\DonationRequest;
+use App\Models\Donation;
+use App\Models\Tier;
+use Illuminate\Http\Request;
+
+class DonationController extends Controller
+{
+    public function store(DonationRequest $request)
+    {
+        $data = $request->validated();
+
+        $tier = Tier::findOrFail($data['tier_id']);
+
+        $donation = Donation::create([
+            'backer_id' => auth()->user()->id,
+            'tier_id' => $tier->id,
+            'amount' => $tier->amount
+        ]);
+
+        if ($tier->project->funding_goal <= $tier->project->tiers->flatMap->donations->sum('amount')) {
+            $tier->project->update([
+                'status' => 'achieved'
+            ]);
+            $tier->project->tiers->flatMap->donations->map->backer->notifyFunded($tier->project);
+        }
+
+        return redirect()->back();
+    }
+}
