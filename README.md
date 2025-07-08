@@ -6,7 +6,7 @@
     ```bash
     git clone <THE LINK YOU JUST COPIED>
     ```
-4. Go to the directory and open VSCODE there
+4. Go to the directory (The place you ran the prompt from) and open VSCODE there
 5. In the terminal run:
     ```bash
     composer install
