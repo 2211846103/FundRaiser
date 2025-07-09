@@ -25,7 +25,11 @@
     ```
 7. Run:
     ```bash
-    php artisan migrate:seed
+    php artisan migrate
+    ```
+8. Last but not least run:
+    ```bash
+    php artisan db:seed
     ```
 
 # How to run
