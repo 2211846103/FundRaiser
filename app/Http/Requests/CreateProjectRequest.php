@@ -37,10 +37,5 @@ class CreateProjectRequest extends FormRequest
         ];
     }
     
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'tags' => array_filter(array_map('trim', explode(',', (string) $this->input('tags'))))
-        ]);
-    }
+
 }
