@@ -42,7 +42,7 @@
                     @enderror
                     
                     <div>
-                        <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                        <label for="tags[]" class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
                         <div id="tag-container" class="flex flex-wrap items-center gap-2 p-2 bg-white border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-500">
                             <!-- Tags will go here -->
                             <input
@@ -51,7 +51,7 @@
                                 placeholder="Type and press Enter"
                                 class="flex-grow border-none outline-none focus:ring-0 placeholder-gray-400 text-sm py-0.5"
                             />
-                            <input type="hidden" name="tags" id="tags" />
+                            <input type="hidden" name="tags[]" id="tags" />
                         </div>
                         @error('tags')
                             <div class="text-red-500">{{ $message }}</div>
@@ -76,21 +76,21 @@
                 
                 <div class="space-y-6">
                     <div>
-                        <label for="images[]" class="block text-sm font-medium text-gray-700 mb-2">Project Images *</label>
+                        <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Main Image *</label>
                         <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
                             <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                                 <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <div class="mt-4">
                                 <label class="cursor-pointer">
-                                    <span class="mt-2 block text-sm font-medium text-gray-900">Upload project images</span>
-                                    <input id="images" name="images[]" type="file" class="sr-only" accept="image/*">
+                                    <span class="mt-2 block text-sm font-medium text-gray-900">Upload main project image</span>
+                                    <input id="image" name="image" type="file" class="sr-only" accept="image/*">
                                     <div id="image-preview" class="flex flex-wrap gap-4 mt-4"></div>
                                 </label>
                                 <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF up to 10M</p>
                             </div>
                         </div>
-                        @error('images.*')
+                        @error('image')
                             <div class="text-red-500">{{ $message }}</div>
                         @enderror
                     </div>
@@ -267,35 +267,46 @@
         const input = document.getElementById("tag-input");
         const hiddenInput = document.getElementById("tags");
         const tags = [];
+
         input.addEventListener("keydown", function (e) {
             if (e.key === "Enter" && input.value.trim() !== "") {
-            e.preventDefault();
-            const tagText = input.value.trim();
-            if (!tags.includes(tagText)) {
-                tags.push(tagText);
-                updateHiddenInput();
+                e.preventDefault();
+                const tagText = input.value.trim();
 
-                const tag = document.createElement("span");
-                tag.className = "flex items-center bg-blue-100 text-primary text-sm font-medium px-2 py-1 rounded-full";
-                tag.innerHTML = `
-                ${tagText}
-                <button class="ml-2 text-blue-500 hover:text-blue-700" onclick="removeTag('${tagText}', this)">×</button>
-                `;
-                container.insertBefore(tag, input);
-            }
-            input.value = "";
+                if (!tags.includes(tagText)) {
+                    tags.push(tagText);
+                    updateHiddenInput();
+
+                    const tag = document.createElement("span");
+                    tag.className = "flex items-center bg-blue-100 text-primary text-sm font-medium px-2 py-1 rounded-full";
+
+                    const textNode = document.createTextNode(tagText);
+                    const button = document.createElement("button");
+                    button.className = "ml-2 text-blue-500 hover:text-blue-700";
+                    button.textContent = "×";
+                    button.addEventListener("click", () => removeTag(tagText, tag));
+
+                    tag.appendChild(textNode);
+                    tag.appendChild(button);
+
+                    container.insertBefore(tag, input);
+                }
+
+                input.value = "";
             }
         });
-        function removeTag(text, btn) {
+
+        function removeTag(text, tagElement) {
             const index = tags.indexOf(text);
             if (index > -1) {
-            tags.splice(index, 1);
-            updateHiddenInput();
+                tags.splice(index, 1);
+                updateHiddenInput();
             }
-            btn.parentElement.remove();
+            tagElement.remove();
         }
+
         function updateHiddenInput() {
-            hiddenInput.value = tags.join(",");
+            hiddenInput.value = JSON.stringify(tags);
         }
 
         // Images
