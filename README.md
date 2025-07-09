@@ -33,11 +33,13 @@
     ```
 
 # How to run
-1. In the terminal run:
+1. Make sure a php server is running (On Laragon or XAMPP that would be starting the Apache server)
+2. In the terminal run:
     ```bash
     composer run dev
     ```
-2. enjoy :D
+3. In your favorite browser go to http://127.0.0.1:8000
+4. enjoy :D
 
 # Creds: 
 - email: admin.example.com
