@@ -31,6 +31,7 @@
     ```bash
     php artisan db:seed
     ```
+Side Note: If facing any problems running a command try a different terminal.(eg. Powershell => Git Bash)
 
 # How to run
 1. Make sure a php server is running (On Laragon or XAMPP that would be starting the Apache server)
