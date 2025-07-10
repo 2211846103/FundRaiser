@@ -65,4 +65,11 @@ class UserFactory extends Factory
             'is_banned' => true,
         ]);
     }
+
+    public function configure()
+    {
+        return $this->afterCreating(function ($user) {
+            $user->notifyWelcome();
+        });
+    }
 }
