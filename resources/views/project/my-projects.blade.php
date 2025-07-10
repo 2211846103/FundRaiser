@@ -30,28 +30,6 @@
             </a>
         </div>
 
-        <!-- Filter and Search -->
-        <div class="bg-white rounded-lg shadow p-6 mb-8">
-            <div class="flex flex-col md:flex-row gap-4">
-                <div class="flex-1">
-                    <input type="text" placeholder="Search projects..." 
-                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                </div>
-                <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                    <option>All Status</option>
-                    <option>Active</option>
-                    <option>Draft</option>
-                    <option>Under Review</option>
-                    <option>Funded</option>
-                    <option>Failed</option>
-                    <option>Completed</option>
-                </select>
-                <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                    Filter
-                </button>
-            </div>
-        </div>
-
         <!-- Projects List -->
         <div class="space-y-6">
             @foreach ($projects as $project)

@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    const UPDATED_AT = null;
+    use HasFactory;
 
+    const UPDATED_AT = null;
     public $fillable = [
         'user_id',
         'project_id',

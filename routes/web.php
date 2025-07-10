@@ -11,7 +11,7 @@ Route::get('/', function () {
     }])
     ->whereIn('status', ['active', 'achieved'])
     ->orderBy('liked_users_count', 'desc')
-    ->take(4)
+    ->take(3)
     ->get();
 
     return view('index', compact('projects'));

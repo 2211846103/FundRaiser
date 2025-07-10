@@ -24,7 +24,7 @@
 
 
         <!-- Form -->
-        <form class="space-y-8" action="{{ route('projects.store') }}" method="POST">
+        <form class="space-y-8" action="{{ route('projects.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <!-- Basic Information -->
             <div class="bg-white rounded-lg shadow p-6">
@@ -42,7 +42,7 @@
                     @enderror
                     
                     <div>
-                        <label for="tags[]" class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                        <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
                         <div id="tag-container" class="flex flex-wrap items-center gap-2 p-2 bg-white border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-blue-500">
                             <!-- Tags will go here -->
                             <input
@@ -51,7 +51,6 @@
                                 placeholder="Type and press Enter"
                                 class="flex-grow border-none outline-none focus:ring-0 placeholder-gray-400 text-sm py-0.5"
                             />
-                            <input type="hidden" name="tags[]" id="tags" />
                         </div>
                         @error('tags')
                             <div class="text-red-500">{{ $message }}</div>
@@ -77,15 +76,15 @@
                 <div class="space-y-6">
                     <div>
                         <label for="image" class="block text-sm font-medium text-gray-700 mb-2">Main Image *</label>
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
+                        <div class="cursor-pointer border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition-colors">
                             <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                                 <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                             <div class="mt-4">
                                 <label class="cursor-pointer">
                                     <span class="mt-2 block text-sm font-medium text-gray-900">Upload main project image</span>
-                                    <input id="image" name="image" type="file" class="sr-only" accept="image/*">
-                                    <div id="image-preview" class="flex flex-wrap gap-4 mt-4"></div>
+                                    <input id="images" name="image" type="file" class="sr-only" accept="image/*">
+                                    <div id="image-preview" class="flex flex-wrap gap-4 mt-4 justify-center"></div>
                                 </label>
                                 <p class="mt-2 text-xs text-gray-500">PNG, JPG, GIF up to 10M</p>
                             </div>
@@ -267,7 +266,6 @@
         const input = document.getElementById("tag-input");
         const hiddenInput = document.getElementById("tags");
         const tags = [];
-
         input.addEventListener("keydown", function (e) {
             if (e.key === "Enter" && input.value.trim() !== "") {
                 e.preventDefault();
@@ -306,22 +304,52 @@
         }
 
         function updateHiddenInput() {
-            hiddenInput.value = JSON.stringify(tags);
+            document.querySelectorAll('input[name="tags[]"]').forEach(input => input.remove());
+            tags.forEach(tag => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'tags[]';
+                input.value = tag;
+                container.appendChild(input);
+            });
         }
 
         // Images
-        document.getElementById('images').addEventListener('change', function (event) {
-            const preview = document.getElementById('image-preview');
-            preview.innerHTML = ''; // Clear old previews
+        const imageInput = document.getElementById('images');
+        const preview = document.getElementById('image-preview');
 
-            Array.from(event.target.files).forEach(file => {
+        imageInput.addEventListener('change', function (event) {
+            preview.innerHTML = ''; // Clear previous previews
+
+            Array.from(event.target.files).forEach((file, index) => {
                 const reader = new FileReader();
 
                 reader.onload = function (e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'relative w-32 h-32 border border-gray-300 rounded overflow-hidden group';
+
                     const img = document.createElement('img');
                     img.src = e.target.result;
-                    img.className = 'w-32 h-32 object-cover rounded border border-gray-300';
-                    preview.appendChild(img);
+                    img.className = 'w-full h-full object-cover';
+
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = '×';
+                    removeBtn.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity';
+                    removeBtn.type = 'button';
+
+                    removeBtn.onclick = () => {
+                        wrapper.remove();
+                        // Optional: remove file from input (fully clearing input isn't trivial due to FileList being read-only)
+                    };
+
+                    const fileInfo = document.createElement('div');
+                    fileInfo.className = 'absolute bottom-0 w-full bg-black bg-opacity-50 text-white text-xs px-1 truncate';
+                    fileInfo.textContent = `${file.name} (${Math.round(file.size / 1024)} KB)`;
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(removeBtn);
+                    wrapper.appendChild(fileInfo);
+                    preview.appendChild(wrapper);
                 };
 
                 reader.readAsDataURL(file);

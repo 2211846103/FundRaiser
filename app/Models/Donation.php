@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Donation extends Model
 {
+    use HasFactory;
+    
     const UPDATED_AT = null;
-
     protected $fillable = [
         'backer_id',
         'tier_id',

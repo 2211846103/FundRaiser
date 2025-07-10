@@ -20,8 +20,8 @@
                     @if (!$project->tags->isEmpty())
                         <div>
                             <span class="text-gray-500">Tags:</span>
-                            @foreach ($project->tags as $tag)
-                                <span class="font-medium">{{ $tag->name }}</span>
+                            @foreach ($project->tags as $index => $tag)
+                                <span class="font-medium">{{ $tag->name }}</span>@if(!$loop->last),@endif
                             @endforeach
                         </div>
                     @endif

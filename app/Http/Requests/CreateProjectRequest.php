@@ -26,7 +26,7 @@ class CreateProjectRequest extends FormRequest
             'tags' => 'required|array|max:5|min:1',
             'tags.*' => 'string',
             'short_desc' => 'required|string|max:150',
-            'image' => 'image|max:10240|mimes:png,jpg,gif',
+            'image' => 'required|image|max:10240|mimes:png,jpg,gif',
             'funding_goal' => 'required|numeric|min:100|integer',
             'deadline' => 'required|date|after:today',
             'full_desc' => 'required|string|max:2000',
@@ -36,6 +36,4 @@ class CreateProjectRequest extends FormRequest
             'tiers.*.desc' => 'required|string|max:255'
         ];
     }
-    
-
 }

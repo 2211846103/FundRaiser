@@ -23,8 +23,8 @@ class AccountRequest extends FormRequest
     {
         return [
             'username' => 'required|string|max:255',
-            'current_password' => 'required_with:new_password|current_password',
-            'new_password' => 'nullable|string|min:8|confirmed'
+            'current_password' => 'required_with:password|current_password',
+            'password' => 'nullable|string|min:8|confirmed'
         ];
     }
 

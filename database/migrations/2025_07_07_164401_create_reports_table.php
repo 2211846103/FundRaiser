@@ -21,7 +21,7 @@ return new class extends Migration
             $table->text('details');
             $table->boolean('is_resolved')->default(false);
             $table->date('resolve_date')->nullable();
-            $table->timestamp('created_at')->default(now());
+            $table->timestamp('created_at');
         });
     }
 

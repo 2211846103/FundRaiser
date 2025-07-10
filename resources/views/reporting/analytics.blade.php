@@ -1,8 +1,8 @@
 @php
     $deviceCount = $deviceLogs->count() == 0 ? 1 : $deviceLogs->count();
-    $desktopPercentage = $deviceLogs->where('device_type', 'Desktop')->count() * 100 / $deviceCount;
-    $mobilePercentage = $deviceLogs->where('device_type', 'Mobile')->count() * 100 / $deviceCount;
-    $tabletPercentage = $deviceLogs->where('device_type', 'Tablet')->count() * 100 / $deviceCount;
+    $desktopPercentage = round($deviceLogs->where('device_type', 'Desktop')->count() * 100 / $deviceCount);
+    $mobilePercentage = round($deviceLogs->where('device_type', 'Mobile')->count() * 100 / $deviceCount);
+    $tabletPercentage = round($deviceLogs->where('device_type', 'Tablet')->count() * 100 / $deviceCount);
 @endphp
 
 <!DOCTYPE html>
@@ -87,10 +87,6 @@
                     
                 </canvas>
             </div>
-        </div>
-
-        <!-- Detailed Analytics -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
             <!-- Device Types -->
             <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-lg font-semibold mb-4">Device Types</h3>

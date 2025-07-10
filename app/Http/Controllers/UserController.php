@@ -33,8 +33,8 @@ class UserController extends Controller
 
         $user = auth()->user();
         $user->username = $data['username'];
-        if ($request->filled('new_password')) {
-            $user->password = Hash::make($data['new_password']);
+        if ($request->filled('password')) {
+            $user->password = Hash::make($data['password']);
         }
         $user->save();
 

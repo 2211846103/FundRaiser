@@ -24,9 +24,45 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'username' => fake()->userName(),
+            'email' => fake()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => 'backer',
+            'is_banned' => false
         ];
+    }
+
+    public function backer()
+    {
+        return $this->state(fn () => [
+            'role' => 'backer',
+        ]);
+    }
+    public function creator()
+    {
+        return $this->state(fn () => [
+            'role' => 'creator',
+            'phone' => fake()->phoneNumber(),
+            'company_name' => fake()->company(),
+        ]);
+    }
+    public function admin()
+    {
+        return $this->state(fn () => [
+            'role' => 'admin',
+            'phone' => fake()->phoneNumber(),
+        ]);
+    }
+    public function active()
+    {
+        return $this->state(fn () => [
+            'is_banned' => false,
+        ]);
+    }
+    public function banned()
+    {
+        return $this->state(fn () => [
+            'is_banned' => true,
+        ]);
     }
 }

@@ -1,5 +1,5 @@
 # Pre-Requisites
-- Laragon (If on Windows will install the rest)
+- Laragon (If on Windows will install the rest) or XAMPP
 - Laravel
 - Composer
 - PHP
@@ -41,6 +41,10 @@ Side Note: If facing any problems running a command try a different terminal.(eg
     ```
 3. In your favorite browser go to http://127.0.0.1:8000
 4. enjoy :D
+
+For test data you can use the following command:
+    ```bash
+    php artisan db:seed --class=TestSeeder
 
 # Creds: 
 - email: admin.example.com
