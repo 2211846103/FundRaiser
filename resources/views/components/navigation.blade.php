@@ -29,9 +29,7 @@ use Laravolt\Avatar\Facade as Avatar;
                         </button>
                         <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
                             <a href="{{ route('profile') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile Settings</a>
-                            @if (auth()->user()->role == 'backer')
-                                <a href="{{ route('notifs') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Notifications</a>
-                            @endif
+                            <a href="{{ route('notifs') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Notifications</a>
                             @if (auth()->user()->role == 'backer')
                                 <a href="{{ route('backer') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</a>
                                 <a href="{{ route('contributions') }}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">My Contributions</a>
