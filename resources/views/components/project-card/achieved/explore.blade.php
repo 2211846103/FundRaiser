@@ -4,7 +4,7 @@
 @endphp
 
 <div class="h-full bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-    <img src="{{ asset('storage/'.$project->image) }}" alt="Project" class="w-full h-48 object-cover">
+    <img src="{{ asset('storage/'.$project->image) }}" onerror="this.onerror=null;this.src='https://placehold.co/600x400';" alt="Project" class="w-full h-48 object-cover">
     <div class="p-6">
         <div class="flex items-center justify-between mb-2">
             <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">

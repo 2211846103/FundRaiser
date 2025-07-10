@@ -1,14 +1,14 @@
 @php
     $donations = $project->tiers->flatMap->donations;
     $raised = $donations->sum('amount');
-    $backers = $donations->map->backer;
+    $backers = $donations->pluck('backer_id')->unique();
     $fund_percentage = round($raised * 100 / $project->funding_goal);
 @endphp
 
 <div class="bg-white rounded-lg shadow p-6">
     <div class="flex items-start justify-between mb-4">
         <div class="flex items-start space-x-4">
-            <img src="{{ asset('storage/'.$project->image) }}" alt="Project" class="w-20 h-20 rounded-lg object-cover">
+            <img src="{{ asset('storage/'.$project->image) }}" onerror="this.onerror=null;this.src='https://placehold.co/600x400';" alt="Project" class="w-20 h-20 rounded-lg object-cover">
             <div class="flex-1">
                 <div class="flex items-center space-x-2 mb-2">
                     <h3 class="text-xl font-semibold">{{ $project->title }}</h3>

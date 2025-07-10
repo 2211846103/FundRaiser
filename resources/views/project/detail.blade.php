@@ -59,7 +59,7 @@
         <!-- Project Header -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
             <div class="relative">
-                <img src="{{ asset('storage/'.$project->image) }}" alt="Smart Home Assistant" class="w-full h-96 object-cover">
+                <img src="{{ asset('storage/'.$project->image) }}" onerror="this.onerror=null;this.src='https://placehold.co/600x400';" alt="Smart Home Assistant" class="w-full h-96 object-cover">
                 <div class="absolute top-4 left-4">
                     @foreach ($project->tags as $tag)
                         <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">{{ $tag->name }}</span>
@@ -70,7 +70,7 @@
                         @csrf
                         <input name="project_id" type="hidden" value="{{ $project->id }}" />
                         <button class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition-colors">
-                            <svg class="w-5 h-5 text-gray-600" fill="{{ auth()->user() && $project->likedUsers->contains(auth()->user()) ? 'red' : 'transparent' }}" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-gray-600" fill="{{ auth()->user() && $project->likedUsers->contains(auth()->user()) ? 'red' : 'transparent' }}" stroke="#ef4444" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                             </svg>
                         </button>
@@ -99,7 +99,7 @@
 
                 <!-- Funding Progress -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                    <div class="md:col-span-2">
+                    <div class="{{ auth()->user()->role == 'backer' ? 'md:col-span-2' : 'col-span-3' }}">
                         <div class="mb-4">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-3xl font-bold text-gray-900">${{ $raised }}</span>
@@ -126,14 +126,16 @@
                         </div>
                     </div>
                     
-                    <div class="space-y-4">
-                        <button onclick="openDonationModal()" class="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
-                            Back This Project
-                        </button>
-                        <div class="text-center text-sm text-gray-600">
-                            <p>All or nothing. This project will only be funded if it reaches its goal by <strong>{{ Carbon::parse($project->deadline)->format('F j, Y') }}</strong>.</p>
+                    @if (auth()->user()->role == 'backer')
+                        <div class="space-y-4">
+                            <button onclick="openDonationModal()" class="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+                                Back This Project
+                            </button>
+                            <div class="text-center text-sm text-gray-600">
+                                <p>All or nothing. This project will only be funded if it reaches its goal by <strong>{{ Carbon::parse($project->deadline)->format('F j, Y') }}</strong>.</p>
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -190,11 +192,11 @@
                 <div class="bg-white rounded-lg shadow p-6">
                     <h3 class="text-xl font-bold mb-4">Reward Tiers</h3>
                     <div class="space-y-4">
-                        @foreach ($project->tiers as $tier)
+                        @foreach ($project->tiers->sortBy('amount') as $tier)
                             <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-colors cursor-pointer" onclick="selectReward({{ $tier->id }})">
                                 <div class="flex justify-between items-start mb-2">
                                     <span class="text-lg font-semibold">${{ $tier->amount }}</span>
-                                    <span class="text-sm text-gray-500">{{ $backers->count() }} backers</span>
+                                    <span class="text-sm text-gray-500">{{ $tier->donations->pluck('backer_id')->unique()->count() }} backers</span>
                                 </div>
                                 <h4 class="font-medium mb-2">{{ $tier->title }}</h4>
                                 <p class="text-sm text-gray-600 mb-2">{{ $tier->desc }}</p>

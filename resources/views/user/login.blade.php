@@ -22,12 +22,15 @@
             </p>
         </div>
         
-        <form class="mt-8 space-y-6" action="#" method="POST">
+        <form class="mt-8 space-y-6" action="/login" method="POST">
             @csrf
+            @error('main')
+                <div class="text-red-500">{{ $message }}</div>
+            @enderror
             <div class="space-y-4">
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
-                    <input id="email" name="email" type="email" required 
+                    <input id="email" name="email" type="email" required  value="{{ old('email') }}"
                            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm" 
                            placeholder="Enter your email">
                 </div>
@@ -47,35 +50,12 @@
             </div>
 
             <div>
-                <button type="submit" onclick="handleLogin()" 
+                <button type="submit" 
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors">
                     Sign in
                 </button>
             </div>
         </form>
     </div>
-
-    <script>
-        function handleLogin() {
-            // Simulate login - in real app, this would make an API call
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if (email && password) {
-                // Store user session (simplified)
-                localStorage.setItem('userLoggedIn', 'true');
-                localStorage.setItem('userEmail', email);
-                
-                // Redirect based on user type (simplified logic)
-                if (email.includes('admin')) {
-                    window.location.href = '/admin-dashboard.html';
-                } else if (email.includes('creator')) {
-                    window.location.href = '/creator-dashboard.html';
-                } else {
-                    window.location.href = '/backer-dashboard.html';
-                }
-            }
-        }
-    </script>
 </body>
 </html>

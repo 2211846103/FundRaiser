@@ -80,7 +80,9 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        return back();
+        return back()->withErrors([
+            'main' => 'Incorrect Email or Password'
+        ]);
     }
     public function logout(Request $request)
     {

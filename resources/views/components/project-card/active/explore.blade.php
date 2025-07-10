@@ -13,7 +13,7 @@
 @endphp
 
 <div class="h-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-    <img src="{{ asset('storage/'.$project->image) }}" alt="Project" class="w-full h-48 object-cover">
+    <img src="{{ asset('storage/'.$project->image) }}" onerror="this.onerror=null;this.src='https://placehold.co/600x400';" alt="Project" class="w-full h-48 object-cover">
     <div class="p-6">
         <div class="flex items-center justify-between mb-2">
             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
@@ -24,8 +24,8 @@
             <form id="like-form-{{ $project->id }}" action="/like-project" method="POST" data-comment-id="{{ $project->id }}">
                 @csrf
                 <input name="project_id" type="hidden" value="{{ $project->id }}" />
-                <button class="text-gray-400 hover:text-red-500 transition-colors">
-                    <svg class="w-5 h-5" fill="{{ auth()->user() && $project->likedUsers->contains(auth()->user()) ? 'red' : 'transparent' }}" stroke="currentColor" viewBox="0 0 24 24">
+                <button class="text-red-500 hover:text-red-500 transition-colors">
+                    <svg class="w-5 h-5" fill="{{ auth()->user() && $project->likedUsers->contains(auth()->user()) ? 'red' : 'transparent' }}" stroke="#ef4444" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                 </button>
@@ -47,9 +47,6 @@
             <span class="text-sm font-medium text-gray-900">Goal: ${{ $project->funding_goal }}</span>
         </div>
         <div class="flex gap-2">
-            <button class="flex-1 bg-primary text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium">
-                Back Project
-            </button>
             <a href="{{ route('projects.show', $project) }}" class="flex-1 border border-primary text-primary py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors text-sm font-medium text-center">
                 View Details
             </a>

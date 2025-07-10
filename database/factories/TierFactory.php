@@ -29,7 +29,7 @@ class TierFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function ($tier) {
-            Donation::factory(fake()->numberBetween(5, 20))->create([
+            Donation::factory(fake()->numberBetween(20, 50))->create([
                 'tier_id' => $tier->id
             ]);
         });
