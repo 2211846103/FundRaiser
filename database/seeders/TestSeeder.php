@@ -22,6 +22,5 @@ class TestSeeder extends Seeder
         User::factory()->count(4)->banned()->create();
         Project::factory()->count(10)->create();
         DeviceLog::factory()->count(50)->create();
-        Report::factory()->count(4)->create();
     }
 }

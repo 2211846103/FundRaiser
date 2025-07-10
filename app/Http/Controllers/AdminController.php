@@ -91,11 +91,18 @@ class AdminController extends Controller
             'project_affected_id' => $report->project->id,
         ]);
 
-        $report->project->tiers->flatMap->donations->map->backer->notifyFail($report->project);
+        foreach ($report->project->tiers->flatMap->donations->map->backer->unique('id') as $backer) {
+            $backer->notifyFail($report->project);
+        }
 
         $report->update([
             'is_resolved' => true,
             'resolve_date' => today()
+        ]);
+
+        $report->project->reports()->update([
+            'is_resolved' => true,
+            'resolve_date' => now()
         ]);
 
         return redirect()->back();

@@ -30,7 +30,7 @@ Route::middleware('auth')->middleware('role:admin')->group(function () {
         return view('admin.users', compact('users'));
     })->name('manage-users');
     Route::get('/handle-reports', function () {
-        $reports = Report::paginate(4);
+        $reports = Report::latest()->paginate(4);
         return view('admin.reports', compact('reports'));
     })->name('handle-reports');
     Route::get('/activity-logs', function () {

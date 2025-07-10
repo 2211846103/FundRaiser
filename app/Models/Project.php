@@ -54,7 +54,5 @@ class Project extends Model
         foreach ($this->tiers->flatMap->donations as $donation) {
             $donation->update(['refunded' => true]);
         }
-
-        $this->status = 'failed';
     }
 }

@@ -36,7 +36,7 @@
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-600">Open Reports</p>
-                        <p class="text-2xl font-semibold text-gray-900">{{ $reports->where('is_resolved', false)->count() }}</p>
+                        <p class="text-2xl font-semibold text-gray-900">{{ \App\Models\Report::where('is_resolved', false)->count() }}</p>
                     </div>
                 </div>
             </div>
@@ -51,9 +51,7 @@
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-600">Resolved Today</p>
                         <p class="text-2xl font-semibold text-gray-900">
-                            {{ $reports->filter(function ($report) {
-                                    return $report->resolve_date && $report->resolve_date->isSameDay(Carbon::now());
-                                })->count() }}
+                            {{ \App\Models\Report::whereDate('resolve_date', Carbon::today())->count() }}
                         </p>
                     </div>
                 </div>
@@ -69,9 +67,9 @@
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-600">Total This Month</p>
                         <p class="text-2xl font-semibold text-gray-900">
-                            {{ $reports->filter(function ($report) {
-                                    return $report->created_at->isSameMonth(Carbon::now());
-                                })->count() }}
+                            {{ \App\Models\Report::whereYear('created_at', Carbon::now()->year)
+                                                ->whereMonth('created_at', Carbon::now()->month)
+                                                ->count() }}
                         </p>
                     </div>
                 </div>
