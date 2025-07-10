@@ -58,7 +58,7 @@
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-600">Avg. Pledge</p>
-                        <p id="avg-pledge" class="text-2xl font-semibold text-gray-900">${{ max(0, $selected->tiers->flatMap->donations->avg('amount')) }}</p>
+                        <p id="avg-pledge" class="text-2xl font-semibold text-gray-900">${{ round(max(0, $selected->tiers->flatMap->donations->avg('amount')), 2) }}</p>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-600">Total Backers</p>
-                        <p class="text-2xl font-semibold text-gray-900">{{ $selected->tiers->flatMap->donations->map->backer->count() }}</p>
+                        <p class="text-2xl font-semibold text-gray-900">{{ $selected->tiers->flatMap->donations->map->backer->unique('id')->count() }}</p>
                     </div>
                 </div>
             </div>
@@ -125,6 +125,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
     <script>
         function changeProject(select) {
             if (select.value !== '') {
@@ -140,16 +141,49 @@
             type: 'line',
             data: {
                 labels: @json($dates),
-                datasets: [{
-                    label: 'Total Funding ($)',
-                    data: @json($totals),
-                    fill: true,
-                    borderColor: 'rgba(34, 197, 94, 1)', // green-500
-                    backgroundColor: 'rgba(34, 197, 94, 0.2)',
-                    tension: 0.4
-                }]
+                datasets: [
+                    {
+                        label: 'Total Funding ($)',
+                        data: @json($totals),
+                        fill: true,
+                        borderColor: 'rgba(34, 197, 94, 1)', // green-500
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Funding Goal (${{ $selected?->funding_goal ?? 0 }})',
+                        data: [], // no data — purely for legend
+                        borderColor: 'rgb(248, 136, 7)',
+                        backgroundColor: 'rgba(248, 136, 7, 0.2)',
+                        borderWidth: 2,
+                        borderDash: [6, 6],
+                        pointRadius: 0, // no points
+                        fill: false,
+                    }
+                ]
             },
             options: {
+                plugins: {
+                    annotation: {
+                        annotations: {
+                            goalLine: {
+                                type: 'line',
+                                yMin: {{ $selected?->funding_goal ?? 100 }},
+                                yMax: {{ $selected?->funding_goal ?? 100 }},
+                                borderColor: 'rgb(248, 136, 7)', // orange
+                                borderWidth: 2,
+                                borderDash: [6, 6],
+                                label: {
+                                    enabled: false,
+                                    content: 'Funding Goal (${{ $selected?->funding_goal ?? 0 }})',
+                                    position: 'start',
+                                    backgroundColor: 'rgba(248, 136, 7, 0.7)',
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                },
                 responsive: true,
                 scales: {
                     y: {
@@ -161,7 +195,8 @@
                         }
                     }
                 }
-            }
+            },
+            plugins: [Chart.registry.getPlugin('annotation')]
         });
     </script>
 </body>
