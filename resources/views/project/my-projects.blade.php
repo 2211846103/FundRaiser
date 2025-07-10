@@ -39,6 +39,10 @@
                     <x-project-card.pending.creator :project="$project" />
                 @elseif ($project->status == 'achieved')
                     <x-project-card.achieved.creator :project="$project" />
+                @elseif ($project->status == 'deactivated')
+                    <x-project-card.deactivated.creator :project="$project" />
+                @elseif ($project->status == 'rejected')
+                    <x-project-card.rejected.creator :project="$project" />
                 @else
                     <x-project-card.failed.creator :project="$project" />
                 @endif

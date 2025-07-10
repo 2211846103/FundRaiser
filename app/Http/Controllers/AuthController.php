@@ -38,7 +38,7 @@ class AuthController extends Controller
             'company_name' => $data['company_name']
         ]);
 
-        $user->notifyWelcome();
+        $user->notify('welcome');
 
         return redirect()->route('login');
     }

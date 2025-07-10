@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'backer_id');
-            $table->foreignIdFor(Tier::class);
+            $table->foreignIdFor(User::class, 'backer_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(Tier::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->decimal('amount');
             $table->boolean('refunded')->default(false);
             $table->timestamp('created_at')->default(now());

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('project_tag', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Project::class);
-            $table->foreignIdFor(Tag::class);
+            $table->foreignIdFor(Project::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(Tag::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
         });
 
         Schema::create('tags', function (Blueprint $table) {

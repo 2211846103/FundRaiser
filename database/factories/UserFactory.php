@@ -69,7 +69,7 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function ($user) {
-            $user->notifyWelcome();
+            $user->notify('welcome');
         });
     }
 }

@@ -16,10 +16,10 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->enum('notif_type', ['milestone', 'reply', 'fail', 'welcome']);
-            $table->foreignIdFor(Project::class)->nullable();
-            $table->foreignIdFor(Comment::class)->nullable();
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->enum('notif_type', ['milestone', 'reply', 'fail', 'welcome', 'deactivate', 'reject', 'approve']);
+            $table->foreignIdFor(Project::class)->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(Comment::class)->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->boolean('read')->default(false);
             $table->timestamp('created_at')->nullable();
         });

@@ -13,15 +13,28 @@
                     <h3 class="font-semibold">Reply From: {{ $notification->comment->author->username }}</h3>
                 @elseif ($notification->notif_type == 'fail')
                     <h3 class="font-semibold">Project Failed: {{ $notification->project->title }}</h3>
+                @elseif ($notification->notif_type == 'deactivate')
+                    <h3 class="font-semibold">Project Deactivated: {{ $notification->project->title }}</h3>
+                @elseif ($notification->notif_type == 'reject')
+                    <h3 class="font-semibold">Project Rejected: {{ $notification->project->title }}</h3>
+                @elseif ($notification->notif_type == 'approve')
+                    <h3 class="font-semibold">Project Approved: {{ $notification->project->title }}</h3>
                 @else
                     <h3 class="font-semibold">Welcome to FundRaiser!</h3>
                 @endif
+
                 @if ($notification->notif_type == 'milestone')
                     <p class="text-gray-600 mb-2">Congratulations! The project you backed has reached its funding goal and is now moving to production.</p>
                 @elseif ($notification->notif_type == 'reply')
                     <p class="text-gray-600 mb-2">{{ $notification->comment->content }}</p>
                 @elseif ($notification->notif_type == 'fail')
                     <p class="text-gray-600 mb-2">Unfortunately, the project you backed did not reach its funding goal and will not proceed to production. Thank you for your support.</p>
+                @elseif ($notification->notif_type == 'deactivate')
+                    <p class="text-gray-600 mb-2">Your project has been deactivated following a report and subsequent review.</p>
+                @elseif ($notification->notif_type == 'reject')
+                    <p class="text-gray-600 mb-2">Unfortunately, your project did not meet our publishing guidelines and was not approved. Please review our policies and consider resubmitting.</p>
+                @elseif ($notification->notif_type == 'approve')
+                    <p class="text-gray-600 mb-2">Your project has been approved and is now live on FundRaiser. Backers can now discover and support your idea—good luck!</p>
                 @else
                     <p class="text-gray-600 mb-2">Thanks for joining our community. Discover amazing projects and start backing creators today.</p>
                 @endif
@@ -34,6 +47,12 @@
                         <span>Reply</span>
                     @elseif ($notification->notif_type == 'fail')
                         <span>Project Fail</span>
+                    @elseif ($notification->notif_type == 'deactivate')
+                        <span>Project Deactivation</span>
+                    @elseif ($notification->notif_type == 'reject')
+                        <span>Project Rejection</span>
+                    @elseif ($notification->notif_type == 'approve')
+                        <span>Project Approval</span>
                     @else
                         <span>Welcome</span>
                     @endif

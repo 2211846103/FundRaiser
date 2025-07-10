@@ -20,7 +20,7 @@ class TierFactory extends Factory
     {
         return [
             'project_id' => Project::inRandomOrder()->first()->id ?? Project::factory(),
-            'amount' => fake()->numberBetween(5, 100),
+            'amount' => fake()->numberBetween(100, 500),
             'title' => fake()->sentence(2, true),
             'desc' => fake()->sentence(6, true)
         ];
@@ -29,8 +29,9 @@ class TierFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function ($tier) {
-            Donation::factory(fake()->numberBetween(20, 50))->create([
-                'tier_id' => $tier->id
+            Donation::factory(fake()->numberBetween(5, int2: 20))->create([
+                'tier_id' => $tier->id,
+                'amount' => $tier->amount
             ]);
         });
     }

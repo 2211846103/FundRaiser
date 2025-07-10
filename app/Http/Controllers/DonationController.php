@@ -25,7 +25,9 @@ class DonationController extends Controller
             $tier->project->update([
                 'status' => 'achieved'
             ]);
-            $tier->project->tiers->flatMap->donations->map->backer->notifyFunded($tier->project);
+            foreach ($tier->project->tiers->flatMap->donations->map->backer->unique('id') as $backer) {
+                $backer->notify('milestone', $tier->project);
+            }
         }
 
         return redirect()->back();

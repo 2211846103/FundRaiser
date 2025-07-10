@@ -22,7 +22,7 @@ Route::middleware('auth')->middleware('role:admin')->group(function () {
         return view('admin.create', compact('admins'));
     })->name('create-admin');
     Route::get('/review-projects', function () {
-        $projects = Project::where('status', 'pending')->paginate(3);
+        $projects = Project::latest()->where('status', 'pending')->paginate(3);
         return view('admin.projects', compact('projects'));
     })->name('review-projects');
     Route::get('/manage-users', function () {

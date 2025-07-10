@@ -38,9 +38,6 @@
             <span class="text-sm font-medium text-gray-900">Goal: ${{ $project->funding_goal }}</span>
         </div>
         <div class="flex gap-2">
-            <button class="flex-1 bg-gray-300 text-gray-600 py-2 px-4 rounded-lg cursor-not-allowed text-sm font-medium" disabled>
-                Funding Complete
-            </button>
             <a href="{{ route('projects.show', $project) }}"
                 class="flex-1 flex items-center justify-center border border-primary text-primary py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors text-sm font-medium text-center">
                 View Details

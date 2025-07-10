@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Project::class);
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(Project::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->enum('reason', ['inappropriate', 'fraud', 'misleading', 'copyright', 'other']);
             $table->text('details');
             $table->boolean('is_resolved')->default(false);

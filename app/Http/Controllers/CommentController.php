@@ -20,7 +20,7 @@ class CommentController extends Controller
         ]);
 
         if ($comment->parent)
-            $comment->parent->author->notifyReply($comment);
+            $comment->parent->author->notify('reply', null, $comment);
 
         return redirect()->back();
     }

@@ -6,7 +6,7 @@
     $donations = $project->tiers->flatMap->donations;
     $backers = $donations->map->backer;
     $raised = $donations->sum('amount');
-    $fund_percentage = round(min(100, $raised * 100 / $project->funding_goal));
+    $fund_percentage = round($raised * 100 / $project->funding_goal);
     $deadline = Carbon::parse($project->deadline);
     $now = Carbon::now();
     $daysLeft = round($now->diffInDays($deadline, false));
@@ -66,20 +66,24 @@
                     @endforeach
                 </div>
                 <div class="absolute top-4 right-4 flex space-x-2">
-                    <form id="like-form-{{ $project->id }}" action="/like-project" method="POST" data-comment-id="{{ $project->id }}">
-                        @csrf
-                        <input name="project_id" type="hidden" value="{{ $project->id }}" />
-                        <button class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition-colors">
-                            <svg class="w-5 h-5 text-gray-600" fill="{{ auth()->user() && $project->likedUsers->contains(auth()->user()) ? 'red' : 'transparent' }}" stroke="#ef4444" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    @if (auth()->id() != $project->creator->id)
+                        <form id="like-form-{{ $project->id }}" action="/like-project" method="POST" data-comment-id="{{ $project->id }}">
+                            @csrf
+                            <input name="project_id" type="hidden" value="{{ $project->id }}" />
+                            <button class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition-colors">
+                                <svg class="w-5 h-5 text-gray-600" fill="{{ auth()->user() && $project->likedUsers->contains(auth()->user()) ? 'red' : 'transparent' }}" stroke="#ef4444" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    @endif
+                    @if (auth()->user()->role != 'admin' && auth()->id() != $project->creator->id)
+                        <button onclick="openReportModal()" class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition-colors">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                             </svg>
                         </button>
-                    </form>
-                    <button onclick="openReportModal()" class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition-colors">
-                        <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                        </svg>
-                    </button>
+                    @endif
                 </div>
             </div>
             
@@ -106,11 +110,15 @@
                                 <span class="text-lg text-gray-600">raised of ${{ $project->funding_goal }} goal</span>
                             </div>
                             <div class="w-full bg-gray-200 rounded-full h-3">
-                                <div class="bg-secondary h-3 rounded-full" style="width: {{ $fund_percentage }}%"></div>
+                                <div class="bg-{{ $project->status == 'achieved' ? 'yellow-500' : 'secondary' }} h-3 rounded-full" style="width: {{ $fund_percentage }}%"></div>
                             </div>
                             <div class="flex justify-between text-sm text-gray-600 mt-2">
                                 <span>{{ $fund_percentage }}% funded</span>
-                                <span>${{ min(abs($project->funding_goal - $raised), $project->funding_goal) }} to go</span>
+                                @if ($project->status != 'achieved')
+                                    <span>${{ min(abs($project->funding_goal - $raised), $project->funding_goal) }} to go</span>
+                                @else
+                                    <span>${{ min(abs($project->funding_goal - $raised), $project->funding_goal) }} overreached!</span>
+                                @endif
                             </div>
                         </div>
                         

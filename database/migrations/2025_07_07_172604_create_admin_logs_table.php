@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('admin_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'admin_id');
+            $table->foreignIdFor(User::class, 'admin_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->enum('action', ['banned', 'unbanned', 'approved', 'declined', 'deactivated']);
-            $table->foreignIdFor(User::class, 'user_affected_id')->nullable();
-            $table->foreignIdFor(Project::class, 'project_affected_id')->nullable();
+            $table->foreignIdFor(User::class, 'user_affected_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(Project::class, 'project_affected_id')->nullable()->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamp('created_at')->default(now());
         });
     }

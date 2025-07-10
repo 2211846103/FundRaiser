@@ -73,40 +73,13 @@ class User extends Authenticatable
         return $this->hasMany(Notification::class);
     }
 
-    public function notifyFunded(Project $project)
+    public function notify(string $status, Project $project = null, Comment $comment = null)
     {
         $notif = new \App\Models\Notification;
-        $notif->notif_type = 'milestone';
+        $notif->notif_type = $status;
         $notif->user_id = $this->id;
-        $notif->comment_id = null;
-        $notif->project_id = $project->id;
-        $notif->save();
-    }
-    public function notifyReply(Comment $comment)
-    {
-        \App\Models\Notification::create([
-            'notif_type' => 'reply',
-            'user_id' => $this->id,
-            'comment_id' => $comment->id,
-            'project_id' => null
-        ]);
-    }
-    public function notifyFail(Project $project)
-    {
-        $notif = new \App\Models\Notification;
-        $notif->notif_type = 'fail';
-        $notif->user_id = $this->id;
-        $notif->comment_id = null;
-        $notif->project_id = $project->id;
-        $notif->save();
-    }
-    public function notifyWelcome()
-    {
-        $notif = new \App\Models\Notification;
-        $notif->notif_type = 'welcome';
-        $notif->user_id = $this->id;
-        $notif->comment_id = null;
-        $notif->project_id = null;
+        $notif->comment_id = $comment ? $comment->id : null;
+        $notif->project_id = $project ? $project->id : null;
         $notif->save();
     }
 

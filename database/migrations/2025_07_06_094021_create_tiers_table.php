@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('tiers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Project::class);
+            $table->foreignIdFor(Project::class)->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
             $table->decimal('amount');
             $table->string('desc', 255);

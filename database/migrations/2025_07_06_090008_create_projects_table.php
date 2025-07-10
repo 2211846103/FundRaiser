@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class, 'creator_id');
+            $table->foreignIdFor(User::class, 'creator_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->string('title');
             $table->string('short_desc');
             $table->text('full_desc');
             $table->date('deadline');
             $table->decimal('funding_goal', 10, 2);
-            $table->enum('status', ['pending', 'active', 'achieved', 'failed'])->default('pending');
+            $table->enum('status', ['pending', 'active', 'achieved', 'failed', 'deactivated', 'rejected'])->default('pending');
             $table->string('image');
             $table->timestamps();
         });

@@ -23,13 +23,15 @@ class AdminController extends Controller
             'project_affected_id' => $project->id,
         ]);
 
+        $project->creator->notify('approve', $project);
+
         return redirect()->back();
     }
 
     public function reject(Project $project)
     {
         $project->update([
-            'status' => 'failed'
+            'status' => 'rejected'
         ]);
 
         AdminLog::create([
@@ -38,6 +40,8 @@ class AdminController extends Controller
             'user_affected_id' => null,
             'project_affected_id' => $project->id,
         ]);
+
+        $project->creator->notify('reject', $project);
 
         return redirect()->back();
     }
@@ -79,7 +83,7 @@ class AdminController extends Controller
     public function deactivate(Report $report)
     {
         $report->project->update([
-            'status' => 'failed'
+            'status' => 'deactivated'
         ]);
 
         $report->project->refund();
@@ -92,8 +96,9 @@ class AdminController extends Controller
         ]);
 
         foreach ($report->project->tiers->flatMap->donations->map->backer->unique('id') as $backer) {
-            $backer->notifyFail($report->project);
+            $backer->notify('deactivate', $report->project);
         }
+        $report->project->creator->notify('deactivate', $report->project);
 
         $report->update([
             'is_resolved' => true,
