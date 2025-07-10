@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Admin - CrowdFund Admin</title>
+    <title>Create Admin - FundRaiser Admin</title>
     
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -22,7 +22,7 @@
         <!-- Header -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Admin Account</h1>
-            <p class="text-gray-600">Add a new administrator to the CrowdFund platform.</p>
+            <p class="text-gray-600">Add a new administrator to the FundRaiser platform.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">

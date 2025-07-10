@@ -7,7 +7,7 @@ use Laravolt\Avatar\Facade as Avatar;
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <div class="flex items-center">
-                <a href="{{ route('home') }}" class="text-2xl font-bold text-primary">CrowdFund</a>
+                <a href="{{ route('home') }}" class="text-2xl font-bold text-primary">FundRaiser</a>
                 @auth
                     @if (auth()->user()->role == 'admin')
                         <span class="ml-4 bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Admin</span>

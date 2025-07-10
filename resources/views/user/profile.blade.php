@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Profile Settings - CrowdFund</title>
+    <title>Profile Settings - FundRaiser</title>
     
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -77,7 +77,7 @@
                             <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
                             <input id="username" name="username" type="text" value="{{ auth()->user()->username }}" 
                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                            <p class="text-sm text-gray-500 mt-1">This is your public username on CrowdFund</p>
+                            <p class="text-sm text-gray-500 mt-1">This is your public username on FundRaiser</p>
                         </div>
                         @error('username')
                             <div class="text-red-500">{{ $message }}</div>

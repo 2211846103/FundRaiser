@@ -42,7 +42,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}" >
-    <title>Smart Home Assistant 2.0 - CrowdFund</title>
+    <title>{{ $project->title }} - FundRaiser</title>
     
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -66,24 +66,26 @@
                     @endforeach
                 </div>
                 <div class="absolute top-4 right-4 flex space-x-2">
-                    @if (auth()->id() != $project->creator->id)
-                        <form id="like-form-{{ $project->id }}" action="/like-project" method="POST" data-comment-id="{{ $project->id }}">
-                            @csrf
-                            <input name="project_id" type="hidden" value="{{ $project->id }}" />
-                            <button class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition-colors">
-                                <svg class="w-5 h-5 text-gray-600" fill="{{ auth()->user() && $project->likedUsers->contains(auth()->user()) ? 'red' : 'transparent' }}" stroke="#ef4444" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    @auth
+                        @if (auth()->id() != $project->creator->id)
+                            <form id="like-form-{{ $project->id }}" action="/like-project" method="POST" data-comment-id="{{ $project->id }}">
+                                @csrf
+                                <input name="project_id" type="hidden" value="{{ $project->id }}" />
+                                <button class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition-colors">
+                                    <svg class="w-5 h-5 text-gray-600" fill="{{ auth()->user() && $project->likedUsers->contains(auth()->user()) ? 'red' : 'transparent' }}" stroke="#ef4444" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        @endif
+                        @if (auth()->user()->role != 'admin' && auth()->id() != $project->creator->id)
+                            <button onclick="openReportModal()" class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition-colors">
+                                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                                 </svg>
                             </button>
-                        </form>
-                    @endif
-                    @if (auth()->user()->role != 'admin' && auth()->id() != $project->creator->id)
-                        <button onclick="openReportModal()" class="bg-white bg-opacity-90 p-2 rounded-full hover:bg-opacity-100 transition-colors">
-                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                            </svg>
-                        </button>
-                    @endif
+                        @endif
+                    @endauth
                 </div>
             </div>
             
@@ -103,7 +105,7 @@
 
                 <!-- Funding Progress -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                    <div class="{{ auth()->user()->role == 'backer' ? 'md:col-span-2' : 'col-span-3' }}">
+                    <div class="{{ auth() ?? auth()->user()->role != 'backer' ? 'col-span-3' : 'md:col-span-2' }}">
                         <div class="mb-4">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="text-3xl font-bold text-gray-900">${{ $raised }}</span>
@@ -134,16 +136,18 @@
                         </div>
                     </div>
                     
-                    @if (auth()->user()->role == 'backer')
-                        <div class="space-y-4">
-                            <button onclick="openDonationModal()" class="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
-                                Back This Project
-                            </button>
-                            <div class="text-center text-sm text-gray-600">
-                                <p>All or nothing. This project will only be funded if it reaches its goal by <strong>{{ Carbon::parse($project->deadline)->format('F j, Y') }}</strong>.</p>
+                    @auth
+                        @if (auth()->user()->role == 'backer')
+                            <div class="space-y-4">
+                                <button onclick="openDonationModal()" class="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+                                    Back This Project
+                                </button>
+                                <div class="text-center text-sm text-gray-600">
+                                    <p>All or nothing. This project will only be funded if it reaches its goal by <strong>{{ Carbon::parse($project->deadline)->format('F j, Y') }}</strong>.</p>
+                                </div>
                             </div>
-                        </div>
-                    @endif
+                        @endif
+                    @endauth
                 </div>
             </div>
         </div>

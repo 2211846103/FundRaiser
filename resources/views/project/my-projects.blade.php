@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Projects - CrowdFund</title>
+    <title>My Projects - FundRaiser</title>
     
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -23,7 +23,7 @@
         <div class="flex justify-between items-center mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 mb-2">My Projects</h1>
-                <p class="text-gray-600">Manage and track all your crowdfunding projects.</p>
+                <p class="text-gray-600">Manage and track all your FundRaisering projects.</p>
             </div>
             <a href="{{ route('projects.create') }}" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition-colors font-medium">
                 Create New Project

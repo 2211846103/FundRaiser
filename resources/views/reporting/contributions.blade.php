@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Contributions - CrowdFund</title>
+    <title>My Contributions - FundRaiser</title>
     
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -28,8 +28,10 @@
                     <x-contrib-card.active :donation="$donation" />
                 @elseif ($donation->tier->project->status == 'achieved')
                     <x-contrib-card.achieved :donation="$donation" />
-                @else
+                @elseif ($donation->tier->project->status == 'failed')
                     <x-contrib-card.failed :donation="$donation" />
+                @else
+                    <x-contrib-card.deactivated :donation="$donation" />
                 @endif
             @endforeach
         </div>
